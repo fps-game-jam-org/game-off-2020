@@ -19,28 +19,28 @@ public class SceneTransitionButton : MonoBehaviour
     public virtual void OnButtonPress() {}
 
     /// <summary>
-    /// Loads the title screen
+    /// Loads the title screen.  Returns true if the scene changed.
     /// </summar>
-    public void LoadTitle()
+    public bool LoadTitle()
     {
-        _sceneChanger.LoadTitle();
+        return _sceneChanger.LoadTitle();
     }
 
     /// <summary>
-    /// Loads the Credits scene
+    /// Loads the Credits scene.  Returns true if the scene changed.
     /// </summary>
-    public void LoadCredits()
+    public bool LoadCredits()
     {
-        _sceneChanger.LoadCredits();
+        return _sceneChanger.LoadCredits();
     }
 
     /// <summary>
     /// Loads the index-th level in the Scene Changer GameObject's
-    /// level list.
+    /// level list.  Returns true if the scene changed.
     /// </summary>
-    public void LoadLevel(int index)
+    public bool LoadLevel(int index)
     {
-        _sceneChanger.LoadLevel(index);
+        return _sceneChanger.LoadLevel(index);
     }
 
 
