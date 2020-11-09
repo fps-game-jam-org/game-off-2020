@@ -1,6 +1,6 @@
 class ToCreditsButton : SceneTransitionButton
 {
-    public override void SendForSceneLoad()
+    public override void OnButtonPress()
     {
         SceneChangerObject.LoadCredits();
     }
