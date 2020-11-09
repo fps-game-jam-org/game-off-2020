@@ -12,25 +12,10 @@ namespace Tests
 {
     public class TestSceneChanger
     {
-        private GameObject _sceneChangerGameObject;
-        private SceneChanger _sceneChanger;
-
-        private string _titleScene = "Title";
-        private string _levelScene = "testLevel";
-        private string _creditsScene = "Credits";
-
         [SetUp]
         public void SetUp()
         {
-            _sceneChangerGameObject =
-                new GameObject("Scene Changer");
-            _sceneChangerGameObject.AddComponent<SceneChanger>();
-            _sceneChanger =
-                _sceneChangerGameObject.GetComponent<SceneChanger>();
-            _sceneChanger.AddTitleScene(_titleScene);
-            _sceneChanger.AddLevelScenes(
-                new List<string>(new string[] {_levelScene}));
-            _sceneChanger.AddCreditsScene(_creditsScene);
+            SetUpSceneChanger();
 
             SceneManager.LoadScene("DummyScene");
         }
@@ -150,6 +135,27 @@ namespace Tests
             Assert.That(currentScene.name, Is.EqualTo("DummyScene"),
                         "Fails to do nothing when there isn't a level "
                         + "scene set");
+        }
+
+
+        private GameObject _sceneChangerGameObject;
+        private SceneChanger _sceneChanger;
+
+        private string _titleScene = "Title";
+        private string _levelScene = "testLevel";
+        private string _creditsScene = "Credits";
+
+        private void SetUpSceneChanger()
+        {
+            _sceneChangerGameObject =
+                new GameObject("Scene Changer");
+            _sceneChangerGameObject.AddComponent<SceneChanger>();
+            _sceneChanger =
+                _sceneChangerGameObject.GetComponent<SceneChanger>();
+            _sceneChanger.AddTitleScene(_titleScene);
+            _sceneChanger.AddLevelScenes(
+                new List<string>(new string[] {_levelScene}));
+            _sceneChanger.AddCreditsScene(_creditsScene);
         }
     }
 }
