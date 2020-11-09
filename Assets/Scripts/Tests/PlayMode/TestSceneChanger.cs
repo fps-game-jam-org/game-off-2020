@@ -4,6 +4,9 @@ using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools;
 using UnityEngine.SceneManagement;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 namespace Tests
 {
@@ -38,6 +41,15 @@ namespace Tests
             Object.Destroy(_sceneChangerGameObject);
             Object.Destroy(_sceneChanger);
         }
+
+#if UNITY_EDITOR
+        [OneTimeTearDown]
+        public void OneTimeTearDown()
+        {
+            // Unity wants to generates garbage in MY game >:(
+            AssetDatabase.MoveAssetToTrash("Assets/InitTestScene*");
+        }
+#endif
 
         [UnityTest]
         public IEnumerator TestInitiallyLoadsToTitle()
