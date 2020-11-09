@@ -14,14 +14,14 @@ public class SceneChanger : MonoBehaviour
 
     public bool LoadTitle()
     {
-        return LoadScene(_titleSceneName);
+        return LoadScene(titleSceneName);
     }
 
     public bool LoadLevel(int levelNumber)
     {
-        if (_levelSceneNames != null)
+        if (levelSceneNames != null)
         {
-            return LoadScene(_levelSceneNames[levelNumber]);
+            return LoadScene(levelSceneNames[levelNumber]);
         }
         else
         {
@@ -31,29 +31,29 @@ public class SceneChanger : MonoBehaviour
 
     public bool LoadCredits()
     {
-        return LoadScene(_creditsSceneName);
+        return LoadScene(creditsSceneName);
     }
 
     public void AddTitleScene(string titleSceneName)
     {
-        _titleSceneName = titleSceneName;
+        titleSceneName = titleSceneName;
     }
 
     public void AddLevelScenes(List<string> levelSceneNames)
     {
         if (levelSceneNames != null)
         {
-            _levelSceneNames = new List<string>(levelSceneNames);
+            levelSceneNames = new List<string>(levelSceneNames);
         }
         else
         {
-            _levelSceneNames = null;    
+            levelSceneNames = null;    
         }
     }
 
     public void AddCreditsScene(string creditsSceneName)
     {
-        _creditsSceneName = creditsSceneName;
+        creditsSceneName = creditsSceneName;
     }
 
     public bool IsLoading {
@@ -61,9 +61,9 @@ public class SceneChanger : MonoBehaviour
     }
 
 
-    private string _titleSceneName = null;
-    private List<string> _levelSceneNames = null;
-    private string _creditsSceneName = null;
+    public string titleSceneName = null;
+    public List<string> levelSceneNames = null;
+    public string creditsSceneName = null;
     private bool _isLoading = false;
 
     private void WaitForLoad() 
@@ -83,7 +83,7 @@ public class SceneChanger : MonoBehaviour
         {
             SceneManager.LoadScene(sceneName);
             WaitForLoad();
-            Debug.Log(_levelSceneNames[0]);
+            Debug.Log(levelSceneNames[0]);
             return true;
         }
         else
