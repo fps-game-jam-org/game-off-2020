@@ -4,6 +4,6 @@ class ToLevelButton : SceneTransitionButton
 
     public override void OnButtonPress()
     {
-        SceneChangerObject.LoadLevel(levelIndex);
+        LoadLevel(levelIndex);
     }
 }

@@ -7,13 +7,24 @@ public class SceneTransitionButton : MonoBehaviour
 {
     public virtual void OnButtonPress() {}
 
-    public SceneChanger SceneChangerObject {
-        get { return _sceneChangerObject; }
+    public void LoadTitle()
+    {
+        _sceneChanger.LoadTitle();
+    }
+
+    public void LoadCredits()
+    {
+        _sceneChanger.LoadCredits();
+    }
+
+    public void LoadLevel(int index)
+    {
+        _sceneChanger.LoadLevel(index);
     }
 
 
     private Button _sceneTransitionButton;
-    private SceneChanger _sceneChangerObject;
+    private SceneChanger _sceneChanger;
 
     private void Awake()
     {
@@ -21,7 +32,6 @@ public class SceneTransitionButton : MonoBehaviour
         _sceneTransitionButton.onClick.AddListener(OnButtonPress);
 
         GameObject sceneChangerGameObject = GameObject.Find("Scene Changer");
-        _sceneChangerObject =
-            sceneChangerGameObject?.GetComponent<SceneChanger>();
+        _sceneChanger = sceneChangerGameObject?.GetComponent<SceneChanger>();
     }
 }
