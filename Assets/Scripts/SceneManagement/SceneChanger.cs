@@ -56,6 +56,21 @@ public class SceneChanger : MonoBehaviour
         _creditsSceneName = creditsSceneName;
     }
 
+    public string TitleSceneName {
+        get { return _titleSceneName; }
+        set { AddTitleScene(value); }
+    }
+
+    public List<string> LevelSceneNames {
+        get { return _levelSceneNames; }
+        set { AddLevelScenes(value); }
+    }
+
+    public string CreitsSceneName {
+        get { return _creditsSceneName; }
+        set { AddCreditsScene(value); }
+    }
+
     public bool IsLoading {
         get { return _isLoading; }
     }
