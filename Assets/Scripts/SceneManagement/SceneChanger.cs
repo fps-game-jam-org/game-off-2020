@@ -56,29 +56,14 @@ public class SceneChanger : MonoBehaviour
         _creditsSceneName = creditsSceneName;
     }
 
-    public string TitleSceneName {
-        get { return _titleSceneName; }
-        set { AddTitleScene(value); }
-    }
-
-    public List<string> LevelSceneNames {
-        get { return _levelSceneNames; }
-        set { AddLevelScenes(value); }
-    }
-
-    public string CreitsSceneName {
-        get { return _creditsSceneName; }
-        set { AddCreditsScene(value); }
-    }
-
     public bool IsLoading {
         get { return _isLoading; }
     }
 
 
-    private string _titleSceneName = null;
-    private List<string> _levelSceneNames = null;
-    private string _creditsSceneName = null;
+    public string _titleSceneName = null;
+    public List<string> _levelSceneNames = null;
+    public string _creditsSceneName = null;
     private bool _isLoading = false;
 
     private void WaitForLoad() 
@@ -98,7 +83,6 @@ public class SceneChanger : MonoBehaviour
         {
             SceneManager.LoadScene(sceneName);
             WaitForLoad();
-            Debug.Log(_levelSceneNames[0]);
             return true;
         }
         else
