@@ -1,9 +1,5 @@
 # SceneManagement
 
-The scene management allows you to specify a title scene, a credits scene, and any number of level scenes.  This works by calling the `SceneChanger.LoadTitle()`, `SceneChanger.LoadCredits()`, and `SceneChanger.LoadLevel(int index)` repectively.
+The **SceneChanger** class allows any GameObject to change to any scene at any time with little overhead.  It implements a method `bool ChangeToScene(SceneManifest scene)` that will switch to a new scene and return `true` if it was successful, and another method `bool IsLoaded()` that returns `false` after a scene is sent to be loaded but before its loading has finished, and `true` after that.
 
-There are button prefabs (`/Assets/Prefabs/UIPrefabs/To Credits Button.prefab`, `To Title Button.prefab`, and `To Level Button.prefab`) that call these methods on press.
-
-Improvements can be made in way the `SceneTransitionButton` script works.  It gets subclassed e.g. by `ToTitleButton` and one of the members of `SceneTransitionButton` has one of its methods called.  Seems awkward to me.
-
-It'd also be good to add a retry button that just reloads the current level.
+**SceneManifest** is an enum located in `/Assets/Scenes/SceneManifest.cs` that gives a code-referencable name to all scenes.  When a designer wants to add a scene to the game, they need to make sure to also add it to `SceneManifest.cs`.  A good future thing to do with this is have all entries in the scene manifest added to the Build Settings at compile time, which is possible since C# has type introspection.
