@@ -11,36 +11,14 @@ using UnityEngine.UI;
 [RequireComponent(typeof(Button))]
 public class SceneTransitionButton : MonoBehaviour
 {
-    /// <summary>
-    /// This is called every time the attached Button is clicked.
-    /// override it to define where the destination ought to be and any
-    /// extra behaviour.
-    /// </summary>
-    public virtual void OnButtonPress() {}
+    public SceneManifest scene;
 
     /// <summary>
-    /// Loads the title screen.  Returns true if the scene changed.
+    /// Loads the scene specified in the inspector.
     /// </summar>
-    public bool LoadTitle()
+    public void LoadScene()
     {
-        return _sceneChanger.LoadTitle();
-    }
-
-    /// <summary>
-    /// Loads the Credits scene.  Returns true if the scene changed.
-    /// </summary>
-    public bool LoadCredits()
-    {
-        return _sceneChanger.LoadCredits();
-    }
-
-    /// <summary>
-    /// Loads the index-th level in the Scene Changer GameObject's
-    /// level list.  Returns true if the scene changed.
-    /// </summary>
-    public bool LoadLevel(int index)
-    {
-        return _sceneChanger.LoadLevel(index);
+        _sceneChanger.ChangeToScene(scene);
     }
 
 
@@ -50,7 +28,7 @@ public class SceneTransitionButton : MonoBehaviour
     private void Awake()
     {
         _sceneTransitionButton = GetComponent<Button>();
-        _sceneTransitionButton?.onClick.AddListener(OnButtonPress);
+        _sceneTransitionButton?.onClick.AddListener(LoadScene);
 
         GameObject sceneChangerGameObject = GameObject.Find("Scene Changer");
         _sceneChanger = sceneChangerGameObject?.GetComponent<SceneChanger>();

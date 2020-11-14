@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 5453624584034433670}
   - component: {fileID: 5453624584034433671}
   - component: {fileID: 5453624584034433668}
-  - component: {fileID: 5453624584034433665}
+  - component: {fileID: 7877733246276682876}
   m_Layer: 5
   m_Name: To Credits Button
   m_TagString: Untagged
@@ -120,7 +120,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &5453624584034433665
+--- !u!114 &7877733246276682876
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -129,9 +129,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 5453624584034433674}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e630383a25c924ad380c4484dc7d3bc1, type: 3}
+  m_Script: {fileID: 11500000, guid: aaee5776f64cc40418bda0d1dfa3d3a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  scene: 2
 --- !u!1 &5453624584707133034
 GameObject:
   m_ObjectHideFlags: 0

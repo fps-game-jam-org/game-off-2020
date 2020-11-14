@@ -39,29 +39,30 @@ namespace Tests
         [UnityTest]
         public IEnumerator TestIdleIsLoadingIsFalse()
         {
-            Assert.That(_sceneChanger.IsLoading(), Is.False);
+            Assert.That(_sceneChanger.IsLoading, Is.False);
             yield return null;
         }
 
         [UnityTest]
         public IEnumerator TestLoadingIsLoadingIsTrue()
         {
-            _sceneChanger.ChangeToScene(SceneManifest.TEST_LEVEL);
-            Assert.That(_sceneChanger.IsLoading(), Is.True);
+            _sceneChanger.ChangeToScene(SceneManifest.TestLevel);
+            Assert.That(_sceneChanger.IsLoading, Is.True);
+            yield return null;
         }
 
 
         [UnityTest]
         public IEnumerator TestLoadsTestLevel()
         {
-            Assert.That(_sceneChanger.ChangeToScene(SceneManifest.TEST_LEVEL),
+            Assert.That(_sceneChanger.ChangeToScene(SceneManifest.TestLevel),
                         Is.True);
-            while (_sceneChanger.IsLoading())
+            while (_sceneChanger.IsLoading)
             {
                 yield return null;
             }
             Scene currentScene = SceneManager.GetActiveScene();
-            Assert.That(currentScene.name, Is.EqualTo("Title"),
+            Assert.That(currentScene.name, Is.EqualTo("testLevel"),
                         "Fails to load a test level.");
             yield return null;
         }

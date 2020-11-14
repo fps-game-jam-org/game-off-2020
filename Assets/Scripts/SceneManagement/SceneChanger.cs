@@ -5,55 +5,19 @@ using UnityEngine.SceneManagement;
 
 public class SceneChanger : MonoBehaviour
 {
-    public bool LoadFirstScene()
+    public bool ChangeToScene(SceneManifest scene)
     {
-        SceneManager.LoadScene(0);
-        WaitForLoad();
-        return true;
-    }
-
-    public bool LoadTitle()
-    {
-        return LoadScene(_titleSceneName);
-    }
-
-    public bool LoadLevel(int levelNumber)
-    {
-        if (_levelSceneNames != null)
+        if (scene != null)
         {
-            return LoadScene(_levelSceneNames[levelNumber]);
+            SceneManager.LoadScene(
+                SceneManifestTranslator.Translate(scene));
+            FlagLoading();
+            return true;
         }
         else
         {
-            return false;    
+            return false;
         }
-    }
-
-    public bool LoadCredits()
-    {
-        return LoadScene(_creditsSceneName);
-    }
-
-    public void AddTitleScene(string titleSceneName)
-    {
-        _titleSceneName = titleSceneName;
-    }
-
-    public void AddLevelScenes(List<string> levelSceneNames)
-    {
-        if (levelSceneNames != null)
-        {
-            _levelSceneNames = new List<string>(levelSceneNames);
-        }
-        else
-        {
-            _levelSceneNames = null;    
-        }
-    }
-
-    public void AddCreditsScene(string creditsSceneName)
-    {
-        _creditsSceneName = creditsSceneName;
     }
 
     public bool IsLoading {
@@ -61,12 +25,9 @@ public class SceneChanger : MonoBehaviour
     }
 
 
-    public string _titleSceneName = null;
-    public List<string> _levelSceneNames = null;
-    public string _creditsSceneName = null;
     private bool _isLoading = false;
 
-    private void WaitForLoad() 
+    private void FlagLoading() 
     {
         _isLoading = true;
         SceneManager.sceneLoaded += SceneLoadDone;
@@ -75,20 +36,6 @@ public class SceneChanger : MonoBehaviour
     private void SceneLoadDone(Scene scene, LoadSceneMode mode)
     {
         _isLoading = false;
-    }
-
-    private bool LoadScene(string sceneName)
-    {
-        if (sceneName != null)
-        {
-            SceneManager.LoadScene(sceneName);
-            WaitForLoad();
-            return true;
-        }
-        else
-        {
-            return false;
-        }
     }
 
     private void Start()
