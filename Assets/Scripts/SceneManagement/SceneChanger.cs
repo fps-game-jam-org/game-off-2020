@@ -5,19 +5,11 @@ using UnityEngine.SceneManagement;
 
 public class SceneChanger : MonoBehaviour
 {
-    public bool ChangeToScene(SceneManifest scene)
+    public void ChangeToScene(SceneManifest scene)
     {
-        if (scene != null)
-        {
-            SceneManager.LoadScene(
-                SceneManifestTranslator.Translate(scene));
-            FlagLoading();
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        SceneManager.LoadScene(
+            SceneManifestTranslator.Translate(scene));
+        FlagLoading();
     }
 
     public bool IsLoading {

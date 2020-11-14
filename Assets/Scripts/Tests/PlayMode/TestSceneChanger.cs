@@ -55,8 +55,7 @@ namespace Tests
         [UnityTest]
         public IEnumerator TestLoadsTestLevel()
         {
-            Assert.That(_sceneChanger.ChangeToScene(SceneManifest.TestLevel),
-                        Is.True);
+            _sceneChanger.ChangeToScene(SceneManifest.TestLevel);
             while (_sceneChanger.IsLoading)
             {
                 yield return null;
