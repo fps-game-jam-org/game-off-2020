@@ -5,32 +5,28 @@ using UnityEngine.UI;
 
 
 /// <summary>
-/// Attach this to a GameObject that has a Button.  Every time the
-/// button is clicked, it will call OnButtonPress
+/// Attach this to a GameObject that has a Button.  When a
+/// button is pressed, it will transition to scene.
 /// </summary>
 [RequireComponent(typeof(Button))]
 public class SceneTransitionButton : MonoBehaviour
 {
-    public SceneManifest scene;
+    public SceneManifest scene = SceneManifest.DummyLevel;
 
-    /// <summary>
-    /// Loads the scene specified in the inspector.
-    /// </summar>
     public void LoadScene()
     {
         _sceneChanger.ChangeToScene(scene);
     }
 
 
-    private Button _sceneTransitionButton;
+    private Button _button;
     private SceneChanger _sceneChanger;
 
     private void Awake()
     {
-        _sceneTransitionButton = GetComponent<Button>();
-        _sceneTransitionButton?.onClick.AddListener(LoadScene);
-
+        _button = GetComponent<Button>();
+        _button.onClick.AddListener(LoadScene);
         GameObject sceneChangerGameObject = GameObject.Find("Scene Changer");
-        _sceneChanger = sceneChangerGameObject?.GetComponent<SceneChanger>();
+        _sceneChanger = sceneChangerGameObject.GetComponent<SceneChanger>();
     }
 }
