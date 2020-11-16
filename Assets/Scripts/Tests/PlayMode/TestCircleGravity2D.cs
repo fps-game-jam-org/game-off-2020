@@ -120,7 +120,7 @@ namespace Tests
                         "Fails to give 0 gravity to transforms at the "
                         + "center of the region.");
             yield return null;
-        }        
+        }
 
 
         private GameObject _testObject;
