@@ -40,7 +40,7 @@ namespace Tests
             _testObject.transform.position =
                 new Vector3(100.0f, 100.0f, 0.0f);
             Assert.That(_gravity.AccelerationAt(_testObject.transform),
-                        Is.EqualTo(0.0f).Within(0.0001e-13),
+                        Is.EqualTo(Vector2.zero),
                         "Fails to give 0 gravity to transforms not in "
                         + "the region.");
             yield return null;
@@ -52,7 +52,7 @@ namespace Tests
             _testObject.transform.position =
                 new Vector3(23.0f, 23.0f, 0.0f);
             Assert.That(_gravity.AccelerationAt(_testObject.transform),
-                        Is.EqualTo(0.0f).Within(0.0001e-13),
+                        Is.EqualTo(Vector2.zero),
                         "Fails to give 0 gravity to transforms that "
                         + " are very close to but not in the region.");
             yield return null;
@@ -64,11 +64,12 @@ namespace Tests
             float centerDistance = 20.0f;
             _testObject.transform.position =
                 new Vector3(1.0f, 1.0f + centerDistance, 0.0f);
+            Vector2 a = Vector2.down
+                            * _gravity.gravitationalConstant * _gravity.mass
+                            / Mathf.Pow(centerDistance, 2);
+            Debug.Log($"Desired: {a.x}, {a.y}");
             Assert.That(_gravity.AccelerationAt(_testObject.transform),
-                        Is.EqualTo(
-                            _gravity.gravitationalConstant * _gravity.mass
-                            / Mathf.Pow(centerDistance, 2))
-                          .Within(0.0001e-13),
+                        Is.EqualTo(a),
                         "Fails to give correct gravity to transforms "
                         + "in the region.");
             yield return null;
@@ -85,8 +86,8 @@ namespace Tests
             Assert.That(_gravity.AccelerationAt(_testObject.transform),
                         Is.EqualTo(
                            _gravity.gravitationalConstant * _gravity.mass
-                           / Mathf.Pow(centerDistance, 2))
-                          .Within(0.0001e-13),
+                           / Mathf.Pow(centerDistance, 2)
+                           * new Vector2(-1/Mathf.Sqrt(2), -1/Mathf.Sqrt(2))),
                         "Fails to give correct gravity to transforms "
                         + "in the region.");
             yield return null;
@@ -103,8 +104,8 @@ namespace Tests
             Assert.That(_gravity.AccelerationAt(_testObject.transform),
                         Is.EqualTo(
                            _gravity.gravitationalConstant * _gravity.mass
-                           / Mathf.Pow(centerDistance, 2))
-                          .Within(0.0001e-13f),
+                           / Mathf.Pow(centerDistance, 2)
+                           * new Vector2(-1/Mathf.Sqrt(2), -1/Mathf.Sqrt(2))),
                         "Fails to give correct gravity to transforms "
                         + "in the region.");
             yield return null;
@@ -116,7 +117,7 @@ namespace Tests
             _testObject.transform.position =
                 new Vector3(1.0f, 1.0f, 0.0f);
             Assert.That(_gravity.AccelerationAt(_testObject.transform),
-                        Is.EqualTo(0.0f).Within(0.0001e-13),
+                        Is.EqualTo(Vector2.zero),
                         "Fails to give 0 gravity to transforms at the "
                         + "center of the region.");
             yield return null;
@@ -126,6 +127,7 @@ namespace Tests
         private GameObject _testObject;
         private GameObject _gravityPlanet;
         private CircleGravity2D _gravity;
+        private Vector2 _planetPosition = new Vector2(1.0f, 1.0f);
 
         private void SetUpScene()
         {
@@ -135,8 +137,7 @@ namespace Tests
                 new GameObject("Planet",
                                new System.Type[] {typeof(CircleCollider2D),
                                                   typeof(CircleGravity2D)});
-            _gravityPlanet.transform.position =
-                new Vector3(1.0f, 1.0f, 0.0f);
+            _gravityPlanet.transform.position = (Vector3) _planetPosition;
             CircleCollider2D _gravityRegion =
                 _gravityPlanet.GetComponent<CircleCollider2D>();
             _gravityRegion.radius = 30.0f;

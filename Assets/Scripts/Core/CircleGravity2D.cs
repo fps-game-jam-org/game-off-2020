@@ -7,7 +7,7 @@ public class CircleGravity2D : MonoBehaviour
     public float mass = 1.0f;
     public float gravitationalConstant = 6.674e-11f;
 
-    public float AccelerationAt(Transform otherTransform)
+    public Vector2 AccelerationAt(Transform otherTransform)
     {
         if (_gravityRegion.OverlapPoint((Vector2) otherTransform.position))
         {
@@ -16,19 +16,19 @@ public class CircleGravity2D : MonoBehaviour
                     otherTransform.position);
             if (otherLocalPosition != _center)
             {
-                Debug.Log(Vector2.Distance(_center, otherLocalPosition));
-                return gravitationalConstant*mass
+                return (_center - otherLocalPosition).normalized
+                    * gravitationalConstant * mass
                     / Mathf.Pow(Vector2.Distance(_center, otherLocalPosition),
                                 2);
             }
             else
             {
-                return 0.0f;    
+                return Vector2.zero;    
             }
         }
         else
         {
-            return 0.0f;
+            return Vector2.zero;
         }
     }
 
