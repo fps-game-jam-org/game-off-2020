@@ -40,9 +40,21 @@ namespace Tests
             _testObject.transform.position =
                 new Vector3(100.0f, 100.0f, 0.0f);
             Assert.That(_gravity.AccelerationAt(_testObject.transform),
-                        Is.EqualTo(0.0f).Within(1).Ulps,
+                        Is.EqualTo(0.0f).Within(0.0001e-13),
                         "Fails to give 0 gravity to transforms not in "
                         + "the region.");
+            yield return null;
+        }
+
+        [UnityTest]
+        public IEnumerator TestTransformCloseToRegionHasNoGravity()
+        {
+            _testObject.transform.position =
+                new Vector3(23.0f, 23.0f, 0.0f);
+            Assert.That(_gravity.AccelerationAt(_testObject.transform),
+                        Is.EqualTo(0.0f).Within(0.0001e-13),
+                        "Fails to give 0 gravity to transforms that "
+                        + " are very close to but not in the region.");
             yield return null;
         }
 
@@ -51,11 +63,12 @@ namespace Tests
         {
             float centerDistance = 20.0f;
             _testObject.transform.position =
-                new Vector3(0.0f, centerDistance, 0.0f);
+                new Vector3(1.0f, 1.0f + centerDistance, 0.0f);
             Assert.That(_gravity.AccelerationAt(_testObject.transform),
-                        Is.EqualTo(6.674e-11*_gravity.mass
-                                   / Mathf.Pow(centerDistance, 2))
-                          .Within(1).Ulps,
+                        Is.EqualTo(
+                            _gravity.gravitationalConstant * _gravity.mass
+                            / Mathf.Pow(centerDistance, 2))
+                          .Within(0.0001e-13),
                         "Fails to give correct gravity to transforms "
                         + "in the region.");
             yield return null;
@@ -66,13 +79,14 @@ namespace Tests
         {
             float centerDistance = 20.0f;
             _testObject.transform.position =
-                new Vector3(Mathf.Sqrt(centerDistance),
-                            Mathf.Sqrt(centerDistance),
+                new Vector3(1.0f + centerDistance / Mathf.Sqrt(2),
+                            1.0f + centerDistance / Mathf.Sqrt(2),
                             0.0f);
             Assert.That(_gravity.AccelerationAt(_testObject.transform),
-                        Is.EqualTo(_GRAVITATIONAL_CONSTANT*_gravity.mass
-                                   / Mathf.Pow(centerDistance, 2))
-                          .Within(1).Ulps,
+                        Is.EqualTo(
+                           _gravity.gravitationalConstant * _gravity.mass
+                           / Mathf.Pow(centerDistance, 2))
+                          .Within(0.0001e-13),
                         "Fails to give correct gravity to transforms "
                         + "in the region.");
             yield return null;
@@ -83,13 +97,14 @@ namespace Tests
         {
             float centerDistance = 10.0f;
             _testObject.transform.position =
-                new Vector3(Mathf.Sqrt(centerDistance),
-                            Mathf.Sqrt(centerDistance),
+                new Vector3(1.0f + centerDistance / Mathf.Sqrt(2),
+                            1.0f + centerDistance / Mathf.Sqrt(2),
                             0.0f);
             Assert.That(_gravity.AccelerationAt(_testObject.transform),
-                        Is.EqualTo(_GRAVITATIONAL_CONSTANT*_gravity.mass
-                                   / Mathf.Pow(centerDistance, 2))
-                          .Within(1).Ulps,
+                        Is.EqualTo(
+                           _gravity.gravitationalConstant * _gravity.mass
+                           / Mathf.Pow(centerDistance, 2))
+                          .Within(0.0001e-13f),
                         "Fails to give correct gravity to transforms "
                         + "in the region.");
             yield return null;
@@ -99,17 +114,15 @@ namespace Tests
         public IEnumerator TestTransformAtCenter()
         {
             _testObject.transform.position =
-                new Vector3(0.0f, 0.0f, 0.0f);
+                new Vector3(1.0f, 1.0f, 0.0f);
             Assert.That(_gravity.AccelerationAt(_testObject.transform),
-                        Is.EqualTo(0.0f).Within(1).Ulps,
+                        Is.EqualTo(0.0f).Within(0.0001e-13),
                         "Fails to give 0 gravity to transforms at the "
                         + "center of the region.");
             yield return null;
         }        
 
 
-
-        private const float _GRAVITATIONAL_CONSTANT = 6.674e-11f;
         private GameObject _testObject;
         private GameObject _gravityPlanet;
         private CircleGravity2D _gravity;
@@ -120,7 +133,7 @@ namespace Tests
 
             _gravityPlanet = new GameObject("Planet 0");
             _gravityPlanet.transform.position =
-                new Vector3(0.0f, 0.0f, 0.0f);
+                new Vector3(1.0f, 1.0f, 0.0f);
             _gravityPlanet.AddComponent<CircleCollider2D>();
             CircleCollider2D _gravityRegion =
                 _gravityPlanet.GetComponent<CircleCollider2D>();
@@ -128,6 +141,7 @@ namespace Tests
             _gravityPlanet.AddComponent<CircleGravity2D>();
             _gravity = _gravityPlanet.GetComponent<CircleGravity2D>();
             _gravity.mass = 1.0f;
+            _gravity.gravitationalConstant = 1.0f;
         }
     }
 }
