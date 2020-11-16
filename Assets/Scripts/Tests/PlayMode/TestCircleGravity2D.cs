@@ -131,14 +131,15 @@ namespace Tests
         {
             _testObject = new GameObject("Test Object");
 
-            _gravityPlanet = new GameObject("Planet 0");
+            _gravityPlanet =
+                new GameObject("Planet 0",
+                               new Type[] {typeof(CircleCollider2D),
+                                           typeof(CircleGravity2D)});
             _gravityPlanet.transform.position =
                 new Vector3(1.0f, 1.0f, 0.0f);
-            _gravityPlanet.AddComponent<CircleCollider2D>();
             CircleCollider2D _gravityRegion =
                 _gravityPlanet.GetComponent<CircleCollider2D>();
             _gravityRegion.radius = 30.0f;
-            _gravityPlanet.AddComponent<CircleGravity2D>();
             _gravity = _gravityPlanet.GetComponent<CircleGravity2D>();
             _gravity.mass = 1.0f;
             _gravity.gravitationalConstant = 1.0f;
