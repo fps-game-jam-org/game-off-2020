@@ -132,9 +132,9 @@ namespace Tests
             _testObject = new GameObject("Test Object");
 
             _gravityPlanet =
-                new GameObject("Planet 0",
-                               new Type[] {typeof(CircleCollider2D),
-                                           typeof(CircleGravity2D)});
+                new GameObject("Planet",
+                               new System.Type[] {typeof(CircleCollider2D),
+                                                  typeof(CircleGravity2D)});
             _gravityPlanet.transform.position =
                 new Vector3(1.0f, 1.0f, 0.0f);
             CircleCollider2D _gravityRegion =
