@@ -6,13 +6,13 @@ using UnityEngine;
 [RequireComponent(typeof(CircleCollider2D))]
 public class SpacialGravityReceiver : MonoBehaviour
 {
-    private Dictionary<string, CircleGravity2D> _activeGravityRegions;
+    private Dictionary<int, CircleGravity2D> _activeGravityRegions;
     private Rigidbody2D _rigidbody;
 
     private Vector2 CurrentAcceleration()
     {
         Vector2 acceleration = Vector2.zero;
-        foreach (KeyValuePair<string, CircleGravity2D> gravityRegion
+        foreach (KeyValuePair<int, CircleGravity2D> gravityRegion
                  in _activeGravityRegions)
         {
             acceleration =
@@ -23,6 +23,7 @@ public class SpacialGravityReceiver : MonoBehaviour
 
     private void Awake()
     {
+        _activeGravityRegions = new Dictionary<int, CircleGravity2D>();
         _rigidbody = GetComponent<Rigidbody2D>();
     }
 
@@ -35,17 +36,22 @@ public class SpacialGravityReceiver : MonoBehaviour
     {
         CircleGravity2D gravityRegion =
             other.gameObject.GetComponent<CircleGravity2D>();
-        if (gravityRegion != null)
+        if (gravityRegion != null
+            && !_activeGravityRegions.ContainsKey(
+                other.gameObject.GetInstanceID()))
         {
-            _activeGravityRegions.Add(other.gameObject.tag, gravityRegion);
+            _activeGravityRegions.Add(other.gameObject.GetInstanceID(),
+                                      gravityRegion);
         }
     }
 
     private void OnTriggerExit2D(Collider2D other)
     {
-        if (other.gameObject.GetComponent<CircleGravity2D>() != null)
+        if (other.gameObject.GetComponent<CircleGravity2D>() != null
+            && _activeGravityRegions.ContainsKey(
+                other.gameObject.GetInstanceID()))
         {
-            _activeGravityRegions.Remove(other.gameObject.tag);
+            _activeGravityRegions.Remove(other.gameObject.GetInstanceID());
         }
     }
 }

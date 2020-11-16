@@ -39,6 +39,7 @@ namespace Tests
         public IEnumerator TestDoesntGetVelocityInZeroGravity()
         {
             _rigidbody.MovePosition(new Vector2(0.0f, 100.0f));
+            _rigidbody.velocity = Vector2.zero;
             for (int i = 0; i < 3; ++i)
                 yield return null;
             Assert.That(_rigidbody.velocity.normalized,
@@ -53,7 +54,8 @@ namespace Tests
         {
             _rigidbody.MovePosition(_planet0Position
                                     + new Vector2(0, 20.0f));
-            for (int i = 0; i < 3; ++i)
+            _rigidbody.velocity = Vector2.zero;
+            for (int i = 0; i < 5; ++i)
                 yield return null;
             Assert.That(_rigidbody.velocity.normalized,
                         Is.EqualTo(Vector2.down),
@@ -72,12 +74,15 @@ namespace Tests
             _rigidbody.MovePosition(
                 _planet0Position
                 + distanceFromCenter * displacementDirection);
+            _rigidbody.velocity = Vector2.zero;
             for (int i = 0; i < 3; ++i)
                 yield return null;
-            Assert.That(_rigidbody.velocity.normalized,
-                        Is.EqualTo(-displacementDirection),
-                        "Fails to make the GameObject move toward the "
-                        + "center of the gravity region when off axis.");
+            Assert.That(
+                (_rigidbody.velocity.normalized
+                 + displacementDirection).magnitude,
+                Is.LessThan(0.0001),
+                "Fails to make the GameObject move toward the center "
+                + "of the gravity region when off axis.");
             yield return null;
         }
 
@@ -93,6 +98,7 @@ namespace Tests
             _rigidbody.MovePosition(
                 _planet0Position
                 + distanceFromCenter * displacementDirection);
+            _rigidbody.velocity = Vector2.zero;
             for (int i = 0; i < 3; ++i)
                 yield return null;
             Assert.That(_rigidbody.velocity.normalized,
@@ -106,6 +112,7 @@ namespace Tests
         public IEnumerator TestDoesntMoveWithEqualForceFromBothPlanets()
         {
             _rigidbody.MovePosition(Vector2.zero);
+            _rigidbody.velocity = Vector2.zero;
             for (int i = 0; i < 3; ++i)
                 yield return null;
             Assert.That(_rigidbody.velocity.normalized,
@@ -119,6 +126,7 @@ namespace Tests
         public IEnumerator TestMovesDownWhenAboveEquilibrium()
         {
             _rigidbody.MovePosition(new Vector2(0.0f, 22.0f));
+            _rigidbody.velocity = Vector2.zero;
             for (int i = 0; i < 3; ++i)
                 yield return null;
             Assert.That(_rigidbody.velocity.normalized,
@@ -144,6 +152,9 @@ namespace Tests
                     new System.Type[] {typeof(Rigidbody2D),
                                        typeof(CircleCollider2D),
                                        typeof(SpacialGravityReceiver)});
+            _gravityReceiverObject.transform.position = new Vector3(0.0f,
+                                                                    100.0f,
+                                                                    0.0f);
             _rigidbody = _gravityReceiverObject.GetComponent<Rigidbody2D>();
             _rigidbody.gravityScale = 0.0f;
             _rigidbody.drag = 0.0f;
