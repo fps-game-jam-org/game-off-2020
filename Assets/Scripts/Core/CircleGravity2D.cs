@@ -5,7 +5,6 @@ using UnityEngine;
 public class CircleGravity2D : MonoBehaviour
 {
     public float mass = 1.0f;
-    public float gravitationalConstant = 6.674e-11f;
 
     public Vector2 AccelerationAt(Transform otherTransform)
     {
@@ -16,8 +15,7 @@ public class CircleGravity2D : MonoBehaviour
                     otherTransform.position);
             if (otherLocalPosition != _center)
             {
-                return (_center - otherLocalPosition).normalized
-                    * gravitationalConstant * mass
+                return (_center - otherLocalPosition).normalized * mass
                     / Mathf.Pow(Vector2.Distance(_center, otherLocalPosition),
                                 2);
             }

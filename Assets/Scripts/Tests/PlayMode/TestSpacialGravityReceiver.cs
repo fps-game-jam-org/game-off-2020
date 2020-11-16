@@ -176,7 +176,6 @@ namespace Tests
             CircleGravity2D gravity0 =
                 _gravityPlanet0.GetComponent<CircleGravity2D>();
             gravity0.mass = 1.0f;
-            gravity0.gravitationalConstant = 1.0f;
 
             _gravityPlanet1 =
                 new GameObject("Planet 1",
@@ -189,7 +188,6 @@ namespace Tests
             CircleGravity2D gravity1 =
                 _gravityPlanet1.GetComponent<CircleGravity2D>();
             gravity1.mass = 1.0f;
-            gravity1.gravitationalConstant = 1.0f;
         }
     }
 }

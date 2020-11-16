@@ -64,12 +64,9 @@ namespace Tests
             float centerDistance = 20.0f;
             _testObject.transform.position =
                 new Vector3(1.0f, 1.0f + centerDistance, 0.0f);
-            Vector2 a = Vector2.down
-                            * _gravity.gravitationalConstant * _gravity.mass
-                            / Mathf.Pow(centerDistance, 2);
-            Debug.Log($"Desired: {a.x}, {a.y}");
             Assert.That(_gravity.AccelerationAt(_testObject.transform),
-                        Is.EqualTo(a),
+                        Is.EqualTo(Vector2.down * _gravity.mass
+                            / Mathf.Pow(centerDistance, 2)),
                         "Fails to give correct gravity to transforms "
                         + "in the region.");
             yield return null;
@@ -84,10 +81,10 @@ namespace Tests
                             1.0f + centerDistance / Mathf.Sqrt(2),
                             0.0f);
             Assert.That(_gravity.AccelerationAt(_testObject.transform),
-                        Is.EqualTo(
-                           _gravity.gravitationalConstant * _gravity.mass
-                           / Mathf.Pow(centerDistance, 2)
-                           * new Vector2(-1/Mathf.Sqrt(2), -1/Mathf.Sqrt(2))),
+                        Is.EqualTo(_gravity.mass
+                                   / Mathf.Pow(centerDistance, 2)
+                                   * new Vector2(-1/Mathf.Sqrt(2),
+                                                 -1/Mathf.Sqrt(2))),
                         "Fails to give correct gravity to transforms "
                         + "in the region.");
             yield return null;
@@ -102,10 +99,10 @@ namespace Tests
                             1.0f + centerDistance / Mathf.Sqrt(2),
                             0.0f);
             Assert.That(_gravity.AccelerationAt(_testObject.transform),
-                        Is.EqualTo(
-                           _gravity.gravitationalConstant * _gravity.mass
-                           / Mathf.Pow(centerDistance, 2)
-                           * new Vector2(-1/Mathf.Sqrt(2), -1/Mathf.Sqrt(2))),
+                        Is.EqualTo(_gravity.mass
+                                   / Mathf.Pow(centerDistance, 2)
+                                   * new Vector2(-1/Mathf.Sqrt(2),
+                                                 -1/Mathf.Sqrt(2))),
                         "Fails to give correct gravity to transforms "
                         + "in the region.");
             yield return null;
@@ -143,7 +140,6 @@ namespace Tests
             _gravityRegion.radius = 30.0f;
             _gravity = _gravityPlanet.GetComponent<CircleGravity2D>();
             _gravity.mass = 1.0f;
-            _gravity.gravitationalConstant = 1.0f;
         }
     }
 }
