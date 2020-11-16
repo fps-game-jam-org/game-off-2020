@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "com.johannesmp.unityscenereference": "1.1.1",
     "com.unity.2d.animation": "3.2.5",
     "com.unity.2d.psdimporter": "2.1.6",
     "com.unity.2d.sprite": "1.0.0",
@@ -43,5 +44,15 @@
     "com.unity.modules.vr": "1.0.0",
     "com.unity.modules.wind": "1.0.0",
     "com.unity.modules.xr": "1.0.0"
-  }
+  },
+  "scopedRegistries": [
+    {
+      "name": "package.openupm.com",
+      "url": "https://package.openupm.com",
+      "scopes": [
+        "com.johannesmp.unityscenereference",
+        "com.openupm"
+      ]
+    }
+  ]
 }
