@@ -15,8 +15,7 @@ public class ShootMissileOnClick : MonoBehaviour
                 camera.ScreenToWorldPoint(Input.mousePosition)
                     - camera.transform.position.z*Vector3.forward,
                 Quaternion.identity);
-            newMissile.GetComponent<Rigidbody2D>().velocity = Vector2.up;
-            Destroy(newMissile, 5.0f);
+            newMissile.GetComponent<Rigidbody2D>().velocity = 4.0f*Vector2.up;
         }
     }
 }
