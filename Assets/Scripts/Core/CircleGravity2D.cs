@@ -16,6 +16,10 @@ public class CircleGravity2D : MonoBehaviour
     /// The acceleration due to gravity at the position of the input
     /// transform.
     /// </summary>
+    /// <param name="otherTransform"
+    /// Transform to measure acceleration at.
+    /// </param>
+    /// <returns>The Vector2 acceleration at otherTransform.</returns>
     public Vector2 AccelerationAt(Transform otherTransform)
     {
         if (_gravityRegion.OverlapPoint((Vector2) otherTransform.position))
