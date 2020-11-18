@@ -2,8 +2,15 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
+/// <summary>
+/// Attach this to any GameObject you want to experience spacial
+/// gravity from a CircleCollider2D.  The gravity acts as a force
+/// applied to the RigidBody2D this component is a sibling of.  Note
+/// that the force experienced will scaled linearly with the mass of
+/// the rigidbody.
+/// </summary>
 [RequireComponent(typeof(Rigidbody2D))]
-[RequireComponent(typeof(CircleCollider2D))]
+[RequireComponent(typeof(Collider2D))]
 public class SpacialGravityReceiver : MonoBehaviour
 {
     private Dictionary<int, CircleGravity2D> _activeGravityRegions;
