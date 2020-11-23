@@ -33,15 +33,8 @@ public class CircleGravity2D : MonoBehaviour
                     / Mathf.Pow(Vector2.Distance(_center, otherLocalPosition),
                                 2);
             }
-            else
-            {
-                return Vector2.zero;    
-            }
         }
-        else
-        {
-            return Vector2.zero;
-        }
+        return Vector2.zero;
     }
 
 
