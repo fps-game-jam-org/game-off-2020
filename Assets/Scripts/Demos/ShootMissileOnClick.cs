@@ -4,6 +4,7 @@ using UnityEngine;
 public class ShootMissileOnClick : MonoBehaviour
 {
     public GameObject missile;
+    public float initialSpeed = 4.0f;
 
 
     private Camera _camera;
@@ -15,9 +16,10 @@ public class ShootMissileOnClick : MonoBehaviour
             GameObject newMissile = Instantiate(
                 missile,
                 _camera.ScreenToWorldPoint(Input.mousePosition)
-                    - _camera.transform.position.z*Vector3.forward,
+                    - _camera.transform.position.z * Vector3.forward,
                 Quaternion.identity);
-            newMissile.GetComponent<Rigidbody2D>().velocity = 4.0f*Vector2.up;
+            newMissile.GetComponent<Rigidbody2D>().velocity =
+                initialSpeed * Vector2.up;
         }
     }
 
