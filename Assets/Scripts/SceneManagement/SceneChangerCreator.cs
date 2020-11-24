@@ -1,9 +1,25 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+
 public class SceneChangerCreator : MonoBehaviour
 {
-    private const string sceneChangerScene =
+    public event System.EventHandler LoadFinished;
+
+
+    protected virtual void OnLoadFinished(Scene scene, LoadSceneMode mode)
+    {
+        System.EventHandler loadFinished = LoadFinished;
+        if (loadFinished != null)
+        {
+            loadFinished(this, null);
+        }
+    }
+
+
+    private bool _isLoading = true;
+
+    private string sceneChangerScene =
         SceneManifestTranslator.Translate(SceneManifest.SceneChanger);
 
     private void Awake()
@@ -12,6 +28,7 @@ public class SceneChangerCreator : MonoBehaviour
         {
             SceneManager.LoadSceneAsync(sceneChangerScene,
                                         LoadSceneMode.Additive);
+            SceneManager.sceneLoaded += OnLoadFinished;
         }
     }
 
@@ -26,5 +43,10 @@ public class SceneChangerCreator : MonoBehaviour
         }
 
         return isLoaded;
+    }
+
+    private void SceneLoadDone(Scene scene, LoadSceneMode mode)
+    {
+        _isLoading = false;
     }
 }

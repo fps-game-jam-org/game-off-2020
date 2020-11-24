@@ -16,7 +16,8 @@ namespace Tests
         [SetUp]
         public void SetUp()
         {
-            SceneManager.LoadScene("DummyScene");
+            SceneManager.LoadScene(
+                SceneManifestTranslator.Translate(SceneManifest.DummyScene0));
         }
 
 #if UNITY_EDITOR
@@ -73,17 +74,37 @@ namespace Tests
                         + "SceneChanger component.");
         }
 
+        [UnityTest]
+        public IEnumerator TestLoadingEvent()
+        {
+            GenerateCreator();
+            bool eventHasOccured = false;
+            _creator.LoadFinished +=
+                (object sender, System.EventArgs e) => eventHasOccured = true;
+            for (int i = 0; i < 5; ++i)
+                yield return null;
+            Assert.That(eventHasOccured, Is.True,
+                        "Fails to notify that the scene creator is "
+                        + "loading.");
+            yield return null;
+        }
+
+
+        GameObject _creatorObject;
+        SceneChangerCreator _creator;
 
         private void GenerateCreator()
         {
-            GameObject sceneChangerCreator =
+            _creatorObject =
                 new GameObject(
                     "Scene Changer Creator",
                     new System.Type[] {typeof(SceneChangerCreator)});
+            _creator = _creatorObject.GetComponent<SceneChangerCreator>();
         }
 
         private IEnumerator TearDownScenes()
         {
+            Object.Destroy(_creator);
             bool scenesAreUnloaded = false;
             SceneManager.sceneUnloaded += (Scene _) => scenesAreUnloaded = true;
             for (int i = 0; i < SceneManager.sceneCount; ++i)
