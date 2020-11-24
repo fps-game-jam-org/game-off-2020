@@ -18,6 +18,7 @@ public class SceneChanger : MonoBehaviour
 
 
     private bool _isLoading = false;
+    private const string _DEFAULT_TAG = "Scene Changer";
 
     private void FlagLoading() 
     {
@@ -30,8 +31,8 @@ public class SceneChanger : MonoBehaviour
         _isLoading = false;
     }
 
-    private void Start()
+    private void Awake()
     {
-        DontDestroyOnLoad(this.gameObject);
+        gameObject.tag = _DEFAULT_TAG;
     }
 }
