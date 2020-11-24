@@ -13,7 +13,9 @@ public enum SceneManifest
     TestLevel,
     Title,
     Credits,
-    DummyLevel,
+    DummyScene0,
+    DummyScene1,
+    SceneChanger,
 }
 
 public class SceneManifestTranslator
@@ -29,7 +31,9 @@ public class SceneManifestTranslator
         sceneNames.Add(SceneManifest.TestLevel, "testLevel");
         sceneNames.Add(SceneManifest.Title, "Title");
         sceneNames.Add(SceneManifest.Credits, "Credits");
-        sceneNames.Add(SceneManifest.DummyLevel, "DummyLevel");
+        sceneNames.Add(SceneManifest.DummyScene0, "DummyScene0");
+        sceneNames.Add(SceneManifest.DummyScene1, "DummyScene1");
+        sceneNames.Add(SceneManifest.SceneChanger, "SceneChanger");
 
         // Add the line at least above here
         try 
