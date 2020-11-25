@@ -27,8 +27,6 @@ namespace Tests
         [TearDown]
         public void TearDown()
         {
-            Debug.Log("Destroy");
-            Object.Destroy(_sceneChangerCreatorGameObject);
             Object.Destroy(_sceneTransitionButtonObject);
         }
 
@@ -62,18 +60,11 @@ namespace Tests
         }
 
 
-        private GameObject _sceneChangerCreatorGameObject;
-        private SceneChanger _sceneChanger;
         private GameObject _sceneTransitionButtonObject;
         private SceneTransitionButton _sceneTransitionButton;
 
         private void SetUpSceneTransitionButton()
         {
-            _sceneChangerCreatorGameObject =
-                new GameObject(
-                    "SceneChangerCreator",
-                    new System.Type[] {typeof(SceneChangerCreator)});
-            Debug.Log("SetUp");
             _sceneTransitionButtonObject =
                 new GameObject(
                     "SceneTransitionButton",
@@ -81,11 +72,6 @@ namespace Tests
             _sceneTransitionButton =
                 _sceneTransitionButtonObject
                 .GetComponent<SceneTransitionButton>();
-            GameObject[] obs = SceneManager.GetActiveScene().GetRootGameObjects();
-            Debug.Log(SceneManager.GetActiveScene().name);
-            for (int i = 0; i < obs.Length; ++i)
-                Debug.Log(obs[i].name);
-            Debug.Log("SetUp finished");
         }
 
         private IEnumerator WaitFrames(int n)
@@ -93,25 +79,5 @@ namespace Tests
             for (int i = 0; i < n; ++i)
                 yield return null;
         }
-
-        // private static void InvokeEvent(object onMe,
-        //                                 string invokeMe,
-        //                                 params object[] eventParams)
-        // {
-        //     System.MulticastDelegate eventDelagate =
-        //         (System.MulticastDelegate)
-        //         onMe.GetType()
-        //             .GetField(invokeMe,
-        //                       (System.Reflection.BindingFlags.Instance
-        //                        | System.Reflection.BindingFlags.Public))
-        //             .GetValue(onMe);
-
-        //     System.Delegate[] delegates = eventDelagate.GetInvocationList();
-
-        //     foreach (System.Delegate dlg in delegates)
-        //     {
-        //        dlg.Method.Invoke(dlg.Target, eventParams);
-        //     }
-        // } 
     }
 }

@@ -29,26 +29,4 @@ public class SceneTransitionButton : MonoBehaviour
         _button = GetComponent<Button>();
         _button.onClick.AddListener(LoadScene);
     }
-
-    private void Start()
-    {
-        // Debug.Log("Start");
-        // GameObject creatorObject = GameObject.Find("SceneChangerCreator");
-        // SceneChangerCreator creator =
-        //     creatorObject.GetComponent<SceneChangerCreator>();
-        // creator.LoadFinished += GetSceneChanger;
-    }
-
-    private void GetSceneChanger(object sender, System.EventArgs e)
-    {
-        // GameObject[] obs = SceneManager.GetActiveScene().GetRootGameObjects();
-        // Debug.Log(SceneManager.GetActiveScene().name);
-        // for (int i = 0; i < obs.Length; ++i)
-        //     Debug.Log(obs[i].name);
-        // GameObject sceneChangerObject =
-        //     GameObject.FindWithTag("SceneChanger");
-        // Debug.Log(gameObject.name);
-        // Debug.Log($"scene changer is null: {sceneChangerObject == null}");
-        // _sceneChanger = sceneChangerObject.GetComponent<SceneChanger>();
-    }
 }
