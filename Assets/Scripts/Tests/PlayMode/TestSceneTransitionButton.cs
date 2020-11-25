@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using NUnit.Framework;
+
 using UnityEngine;
 using UnityEngine.TestTools;
 using UnityEngine.SceneManagement;
@@ -17,17 +18,18 @@ namespace Tests
         [SetUp]
         public void SetUp()
         {
+            SceneManager.LoadScene(
+                SceneManifestTranslator.Translate(SceneManifest.DummyScene0));
+            WaitFrames(10);
             SetUpSceneTransitionButton();
-
-            SceneManager.LoadScene("DummyScene");
         }
 
         [TearDown]
         public void TearDown()
         {
-            Object.Destroy(_sceneChangerGameObject);
-            Object.Destroy(_sceneTransitionButton);
-            Object.Destroy(_sceneButton);
+            Debug.Log("Destroy");
+            Object.Destroy(_sceneChangerCreatorGameObject);
+            Object.Destroy(_sceneTransitionButtonObject);
         }
 
 #if UNITY_EDITOR
@@ -44,39 +46,52 @@ namespace Tests
         {
             _sceneTransitionButton.scene = SceneManifest.TestLevel;
             _sceneTransitionButton.LoadScene();
-            while (_sceneChanger.IsLoading)
+            bool isLoaded = false;
+            SceneChanger.LoadFinished += 
+                (object sender, System.EventArgs e) => isLoaded = true;
+            while (!isLoaded)
             {
                 yield return null;
             }
             Scene currentScene = SceneManager.GetActiveScene();
-            Assert.That(currentScene.name, Is.EqualTo("testLevel"),
+            Assert.That(currentScene.name,
+                        Is.EqualTo(SceneManifestTranslator
+                                   .Translate(SceneManifest.TestLevel)),
                         "Fails to load a test level on button press.");
             yield return null;
         }
 
 
-        private GameObject _sceneChangerGameObject;
+        private GameObject _sceneChangerCreatorGameObject;
         private SceneChanger _sceneChanger;
+        private GameObject _sceneTransitionButtonObject;
         private SceneTransitionButton _sceneTransitionButton;
-        private Button _sceneButton;
 
         private void SetUpSceneTransitionButton()
         {
-            _sceneChangerGameObject =
-                new GameObject("Scene Changer");
-            _sceneChangerGameObject.AddComponent<SceneChanger>();
-            _sceneChanger =
-                _sceneChangerGameObject.GetComponent<SceneChanger>();
-
-            GameObject sceneTransitionButtonGameObject =
-                new GameObject("Scene Transition Button");
-            sceneTransitionButtonGameObject
-                .AddComponent<SceneTransitionButton>();
+            _sceneChangerCreatorGameObject =
+                new GameObject(
+                    "SceneChangerCreator",
+                    new System.Type[] {typeof(SceneChangerCreator)});
+            Debug.Log("SetUp");
+            _sceneTransitionButtonObject =
+                new GameObject(
+                    "SceneTransitionButton",
+                    new System.Type[] {typeof(SceneTransitionButton)});
             _sceneTransitionButton =
-                sceneTransitionButtonGameObject
+                _sceneTransitionButtonObject
                 .GetComponent<SceneTransitionButton>();
-            _sceneButton =
-                sceneTransitionButtonGameObject.GetComponent<Button>();
+            GameObject[] obs = SceneManager.GetActiveScene().GetRootGameObjects();
+            Debug.Log(SceneManager.GetActiveScene().name);
+            for (int i = 0; i < obs.Length; ++i)
+                Debug.Log(obs[i].name);
+            Debug.Log("SetUp finished");
+        }
+
+        private IEnumerator WaitFrames(int n)
+        {
+            for (int i = 0; i < n; ++i)
+                yield return null;
         }
 
         // private static void InvokeEvent(object onMe,

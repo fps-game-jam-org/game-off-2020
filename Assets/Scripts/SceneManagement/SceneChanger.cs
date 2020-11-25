@@ -5,34 +5,28 @@ using UnityEngine.SceneManagement;
 
 public class SceneChanger : MonoBehaviour
 {
-    public void ChangeToScene(SceneManifest scene)
+    public static event System.EventHandler LoadFinished;
+
+    public static void ChangeToScene(SceneManifest scene)
     {
         SceneManager.LoadScene(
             SceneManifestTranslator.Translate(scene));
         FlagLoading();
     }
 
-    public bool IsLoading {
-        get { return _isLoading; }
+
+    private static void OnLoadFinished(Scene scene, LoadSceneMode mode)
+    {
+        System.EventHandler loadFinished = LoadFinished;
+        if (loadFinished != null)
+        {
+            loadFinished(typeof(SceneChanger), System.EventArgs.Empty);
+        }
     }
 
 
-    private bool _isLoading = false;
-    private const string _DEFAULT_TAG = "Scene Changer";
-
-    private void FlagLoading() 
+    private static void FlagLoading() 
     {
-        _isLoading = true;
-        SceneManager.sceneLoaded += SceneLoadDone;
-    }
-
-    private void SceneLoadDone(Scene scene, LoadSceneMode mode)
-    {
-        _isLoading = false;
-    }
-
-    private void Awake()
-    {
-        gameObject.tag = _DEFAULT_TAG;
+        SceneManager.sceneLoaded += OnLoadFinished;
     }
 }

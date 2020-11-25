@@ -34,32 +34,33 @@ namespace Tests
         }
 #endif
 
-        [UnityTest]
-        public IEnumerator TestWhileIdleIsLoadingIsFalse()
-        {
-            Assert.That(_sceneChanger.IsLoading, Is.False,
-                        "Fails to negatively identify of its loading.");
-            yield return null;
-        }
+        // [UnityTest]
+        // public IEnumerator TestWhileIdleIsLoadingIsFalse()
+        // {
+        //     Assert.That(_sceneChanger.IsLoading, Is.False,
+        //                 "Fails to negatively identify of its loading.");
+        //     yield return null;
+        // }
 
-        [UnityTest]
-        public IEnumerator TestWhileLoadingIsLoadingIsTrue()
-        {
-            _sceneChanger.ChangeToScene(SceneManifest.DummyScene1);
-            Assert.That(_sceneChanger.IsLoading, Is.True,
-                        "Fails to positively identify of it's loading.");
-            yield return null;
-        }
+        // [UnityTest]
+        // public IEnumerator TestWhileLoadingIsLoadingIsTrue()
+        // {
+        //     _sceneChanger.ChangeToScene(SceneManifest.DummyScene1);
+        //     Assert.That(_sceneChanger.IsLoading, Is.True,
+        //                 "Fails to positively identify of it's loading.");
+        //     yield return null;
+        // }
 
 
         [UnityTest]
         public IEnumerator TestLoadsTestLevel()
         {
-            _sceneChanger.ChangeToScene(SceneManifest.DummyScene1);
-            while (_sceneChanger.IsLoading)
-            {
+            SceneChanger.ChangeToScene(SceneManifest.DummyScene1);
+            bool eventHasOccured = false;
+            SceneChanger.LoadFinished +=
+                (object sender, System.EventArgs e) => eventHasOccured = true;
+            while (!eventHasOccured)
                 yield return null;
-            }
             Scene currentScene = SceneManager.GetActiveScene();
             Assert.That(currentScene.name, 
                         Is.EqualTo(SceneManifestTranslator
@@ -69,24 +70,24 @@ namespace Tests
         }
 
 
-        private GameObject _sceneChangerObject;
-        private SceneChanger _sceneChanger;
+        // private GameObject _sceneChangerObject;
+        // private SceneChanger _sceneChanger;
 
         private void SetUpScene()
         {
-            SceneManager.LoadScene(
-                SceneManifestTranslator.Translate(SceneManifest.DummyScene0));
-            _sceneChangerObject =
-                new GameObject("Scene Changer",
-                               new System.Type[] {typeof(SceneChanger)});
-            _sceneChanger =
-                _sceneChangerObject.GetComponent<SceneChanger>();
+            // SceneManager.LoadScene(
+            //     SceneManifestTranslator.Translate(SceneManifest.DummyScene0));
+            // _sceneChangerObject =
+            //     new GameObject("Scene Changer",
+            //                    new System.Type[] {typeof(SceneChanger)});
+            // _sceneChanger =
+            //     _sceneChangerObject.GetComponent<SceneChanger>();
         }
 
         private void TearDownScene()
         {
-            Object.Destroy(_sceneChanger);
-            Object.Destroy(_sceneChangerObject);
+            // Object.Destroy(_sceneChanger);
+            // Object.Destroy(_sceneChangerObject);
         }
     }
 }
