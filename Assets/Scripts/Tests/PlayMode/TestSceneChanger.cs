@@ -13,6 +13,7 @@ namespace Tests
 {
     public class TestSceneChanger
     {
+
 #if UNITY_EDITOR
         [OneTimeTearDown]
         public void OneTimeTearDown()
@@ -26,17 +27,33 @@ namespace Tests
         public IEnumerator TestLoadsTestLevel()
         {
             SceneChanger.ChangeToScene(SceneManifest.DummyScene1);
-            bool eventHasOccured = false;
-            SceneChanger.LoadFinished +=
-                (object sender, System.EventArgs e) => eventHasOccured = true;
-            while (!eventHasOccured)
+            LoadingStatus status = new LoadingStatus();
+            SceneChanger.LoadFinished += status.MakeIsLoadedTrue;
+            while (!status.isLoaded)
                 yield return null;
+            SceneChanger.LoadFinished -= status.MakeIsLoadedTrue;
             Scene currentScene = SceneManager.GetActiveScene();
             Assert.That(currentScene.name, 
                         Is.EqualTo(SceneManifestTranslator
                                    .Translate(SceneManifest.DummyScene1)),
                         "Fails to load a test level.");
             yield return null;
+        }
+
+
+        private class LoadingStatus
+        {
+            public bool isLoaded;
+
+            public LoadingStatus()
+            {
+                isLoaded = false;
+            }
+
+            public void MakeIsLoadedTrue(object sender, System.EventArgs e)
+            {
+                isLoaded = true;
+            }
         }
     }
 }

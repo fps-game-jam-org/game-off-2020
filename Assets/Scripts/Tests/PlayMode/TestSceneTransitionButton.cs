@@ -20,7 +20,7 @@ namespace Tests
         {
             SceneManager.LoadScene(
                 SceneManifestTranslator.Translate(SceneManifest.DummyScene0));
-            WaitFrames(10);
+            //WaitFrames(10);
             SetUpSceneTransitionButton();
         }
 
@@ -44,13 +44,11 @@ namespace Tests
         {
             _sceneTransitionButton.scene = SceneManifest.TestLevel;
             _sceneTransitionButton.LoadScene();
-            bool isLoaded = false;
-            SceneChanger.LoadFinished += 
-                (object sender, System.EventArgs e) => isLoaded = true;
-            while (!isLoaded)
-            {
+            LoadingStatus status = new LoadingStatus();
+            SceneChanger.LoadFinished += status.MakeIsLoadedTrue;
+            while (!status.isLoaded)
                 yield return null;
-            }
+            SceneChanger.LoadFinished -= status.MakeIsLoadedTrue;
             Scene currentScene = SceneManager.GetActiveScene();
             Assert.That(currentScene.name,
                         Is.EqualTo(SceneManifestTranslator
@@ -78,6 +76,21 @@ namespace Tests
         {
             for (int i = 0; i < n; ++i)
                 yield return null;
+        }
+
+        private class LoadingStatus
+        {
+            public bool isLoaded;
+
+            public LoadingStatus()
+            {
+                isLoaded = false;
+            }
+
+            public void MakeIsLoadedTrue(object sender, System.EventArgs e)
+            {
+                isLoaded = true;
+            }
         }
     }
 }
