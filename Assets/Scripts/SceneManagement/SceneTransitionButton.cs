@@ -25,7 +25,6 @@ public class SceneTransitionButton : MonoBehaviour
 
     private void Awake()
     {
-        Debug.Log("Awake");
         _button = GetComponent<Button>();
         _button.onClick.AddListener(LoadScene);
     }
