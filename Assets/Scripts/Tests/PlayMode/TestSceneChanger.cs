@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using NUnit.Framework;
+
 using UnityEngine;
 using UnityEngine.TestTools;
 using UnityEngine.SceneManagement;
@@ -12,20 +13,6 @@ namespace Tests
 {
     public class TestSceneChanger
     {
-        [SetUp]
-        public void SetUp()
-        {
-            SetUpSceneChanger();
-
-            SceneManager.LoadScene("DummyScene");
-        }
-
-        [TearDown]
-        public void TearDown()
-        {
-            Object.Destroy(_sceneChangerGameObject);
-            Object.Destroy(_sceneChanger);
-        }
 
 #if UNITY_EDITOR
         [OneTimeTearDown]
@@ -37,46 +24,36 @@ namespace Tests
 #endif
 
         [UnityTest]
-        public IEnumerator TestIdleIsLoadingIsFalse()
-        {
-            Assert.That(_sceneChanger.IsLoading, Is.False);
-            yield return null;
-        }
-
-        [UnityTest]
-        public IEnumerator TestLoadingIsLoadingIsTrue()
-        {
-            _sceneChanger.ChangeToScene(SceneManifest.TestLevel);
-            Assert.That(_sceneChanger.IsLoading, Is.True);
-            yield return null;
-        }
-
-
-        [UnityTest]
         public IEnumerator TestLoadsTestLevel()
         {
-            _sceneChanger.ChangeToScene(SceneManifest.TestLevel);
-            while (_sceneChanger.IsLoading)
-            {
+            SceneChanger.ChangeToScene(SceneManifest.DummyScene1);
+            LoadingStatus status = new LoadingStatus();
+            SceneChanger.LoadFinished += status.MakeIsLoadedTrue;
+            while (!status.isLoaded)
                 yield return null;
-            }
+            SceneChanger.LoadFinished -= status.MakeIsLoadedTrue;
             Scene currentScene = SceneManager.GetActiveScene();
-            Assert.That(currentScene.name, Is.EqualTo("testLevel"),
+            Assert.That(currentScene.name, 
+                        Is.EqualTo(SceneManifestTranslator
+                                   .Translate(SceneManifest.DummyScene1)),
                         "Fails to load a test level.");
             yield return null;
         }
 
 
-        private GameObject _sceneChangerGameObject;
-        private SceneChanger _sceneChanger;
-
-        private void SetUpSceneChanger()
+        private class LoadingStatus
         {
-            _sceneChangerGameObject =
-                new GameObject("Scene Changer");
-            _sceneChangerGameObject.AddComponent<SceneChanger>();
-            _sceneChanger =
-                _sceneChangerGameObject.GetComponent<SceneChanger>();
+            public bool isLoaded;
+
+            public LoadingStatus()
+            {
+                isLoaded = false;
+            }
+
+            public void MakeIsLoadedTrue(object sender, System.EventArgs e)
+            {
+                isLoaded = true;
+            }
         }
     }
 }

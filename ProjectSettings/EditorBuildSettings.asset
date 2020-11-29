@@ -9,7 +9,10 @@ EditorBuildSettings:
     path: Assets/Scenes/Title.unity
     guid: 1ef0e610ccf164f899a070188bd2d182
   - enabled: 1
-    path: Assets/Scenes/Tests/DummyScene.unity
+    path: Assets/Scenes/Tests/DummyScene0.unity
+    guid: efe251dca43f14b09abd7c05a98af5d5
+  - enabled: 1
+    path: Assets/Scenes/Tests/DummyScene1.unity
     guid: bb981314826a5464796a7c7ad8e7cf84
   - enabled: 1
     path: Assets/Scenes/Tests/testLevel.unity
@@ -17,6 +20,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Credits.unity
     guid: efa4f08a0342e4ec3ab68f43cb375e63
+  - enabled: 1
+    path: Assets/Scenes/Utilities/SceneChanger.unity
+    guid: d98d3150b8aeb4aceb620780f4679d85
   m_configObjects:
     com.unity.addressableassets: {fileID: 11400000, guid: 79c4839267a80496ab09d7666e341e54,
       type: 2}

@@ -3,35 +3,40 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class SceneChanger : MonoBehaviour
+
+/// <summary>Use this to handle scene changing.</summary>
+public class SceneChanger
 {
-    public void ChangeToScene(SceneManifest scene)
+    /// <summary>
+    /// This event is invoked when a scene has finished loading.
+    /// You can subscribe functions with this handle to it.
+    ///     f(object sender, System.EventArgs e)
+    /// </summary>
+    public static event System.EventHandler LoadFinished;
+
+    /// <summary>
+    /// Changes to the scene specified.  This also unloads the current
+    /// scene.
+    /// </summary>
+    public static void ChangeToScene(SceneManifest scene)
     {
         SceneManager.LoadScene(
             SceneManifestTranslator.Translate(scene));
         FlagLoading();
     }
 
-    public bool IsLoading {
-        get { return _isLoading; }
+
+    private static void OnLoadFinished(Scene scene, LoadSceneMode mode)
+    {
+        System.EventHandler loadFinished = LoadFinished;
+        if (loadFinished != null)
+        {
+            loadFinished(typeof(SceneChanger), System.EventArgs.Empty);
+        }
     }
 
-
-    private bool _isLoading = false;
-
-    private void FlagLoading() 
+    private static void FlagLoading() 
     {
-        _isLoading = true;
-        SceneManager.sceneLoaded += SceneLoadDone;
-    }
-
-    private void SceneLoadDone(Scene scene, LoadSceneMode mode)
-    {
-        _isLoading = false;
-    }
-
-    private void Start()
-    {
-        DontDestroyOnLoad(this.gameObject);
+        SceneManager.sceneLoaded += OnLoadFinished;
     }
 }

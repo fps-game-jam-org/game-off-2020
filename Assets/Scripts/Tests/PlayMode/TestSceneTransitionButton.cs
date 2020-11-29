@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using NUnit.Framework;
+
 using UnityEngine;
 using UnityEngine.TestTools;
 using UnityEngine.SceneManagement;
@@ -17,17 +18,16 @@ namespace Tests
         [SetUp]
         public void SetUp()
         {
+            SceneManager.LoadScene(
+                SceneManifestTranslator.Translate(SceneManifest.DummyScene0));
+            //WaitFrames(10);
             SetUpSceneTransitionButton();
-
-            SceneManager.LoadScene("DummyScene");
         }
 
         [TearDown]
         public void TearDown()
         {
-            Object.Destroy(_sceneChangerGameObject);
-            Object.Destroy(_sceneTransitionButton);
-            Object.Destroy(_sceneButton);
+            Object.Destroy(_sceneTransitionButtonObject);
         }
 
 #if UNITY_EDITOR
@@ -44,59 +44,53 @@ namespace Tests
         {
             _sceneTransitionButton.scene = SceneManifest.TestLevel;
             _sceneTransitionButton.LoadScene();
-            while (_sceneChanger.IsLoading)
-            {
+            LoadingStatus status = new LoadingStatus();
+            SceneChanger.LoadFinished += status.MakeIsLoadedTrue;
+            while (!status.isLoaded)
                 yield return null;
-            }
+            SceneChanger.LoadFinished -= status.MakeIsLoadedTrue;
             Scene currentScene = SceneManager.GetActiveScene();
-            Assert.That(currentScene.name, Is.EqualTo("testLevel"),
+            Assert.That(currentScene.name,
+                        Is.EqualTo(SceneManifestTranslator
+                                   .Translate(SceneManifest.TestLevel)),
                         "Fails to load a test level on button press.");
             yield return null;
         }
 
 
-        private GameObject _sceneChangerGameObject;
-        private SceneChanger _sceneChanger;
+        private GameObject _sceneTransitionButtonObject;
         private SceneTransitionButton _sceneTransitionButton;
-        private Button _sceneButton;
 
         private void SetUpSceneTransitionButton()
         {
-            _sceneChangerGameObject =
-                new GameObject("Scene Changer");
-            _sceneChangerGameObject.AddComponent<SceneChanger>();
-            _sceneChanger =
-                _sceneChangerGameObject.GetComponent<SceneChanger>();
-
-            GameObject sceneTransitionButtonGameObject =
-                new GameObject("Scene Transition Button");
-            sceneTransitionButtonGameObject
-                .AddComponent<SceneTransitionButton>();
+            _sceneTransitionButtonObject =
+                new GameObject(
+                    "SceneTransitionButton",
+                    new System.Type[] {typeof(SceneTransitionButton)});
             _sceneTransitionButton =
-                sceneTransitionButtonGameObject
+                _sceneTransitionButtonObject
                 .GetComponent<SceneTransitionButton>();
-            _sceneButton =
-                sceneTransitionButtonGameObject.GetComponent<Button>();
         }
 
-        // private static void InvokeEvent(object onMe,
-        //                                 string invokeMe,
-        //                                 params object[] eventParams)
-        // {
-        //     System.MulticastDelegate eventDelagate =
-        //         (System.MulticastDelegate)
-        //         onMe.GetType()
-        //             .GetField(invokeMe,
-        //                       (System.Reflection.BindingFlags.Instance
-        //                        | System.Reflection.BindingFlags.Public))
-        //             .GetValue(onMe);
+        private IEnumerator WaitFrames(int n)
+        {
+            for (int i = 0; i < n; ++i)
+                yield return null;
+        }
 
-        //     System.Delegate[] delegates = eventDelagate.GetInvocationList();
+        private class LoadingStatus
+        {
+            public bool isLoaded;
 
-        //     foreach (System.Delegate dlg in delegates)
-        //     {
-        //        dlg.Method.Invoke(dlg.Target, eventParams);
-        //     }
-        // } 
+            public LoadingStatus()
+            {
+                isLoaded = false;
+            }
+
+            public void MakeIsLoadedTrue(object sender, System.EventArgs e)
+            {
+                isLoaded = true;
+            }
+        }
     }
 }
