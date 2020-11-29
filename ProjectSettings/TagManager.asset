@@ -38,9 +38,24 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: Default
+    uniqueID: 0
+    locked: 0
   - name: Atmosphere
     uniqueID: 2214674029
     locked: 0
-  - name: Default
-    uniqueID: 0
+  - name: Background
+    uniqueID: 1669379463
+    locked: 0
+  - name: Enemy Missile
+    uniqueID: 1619503787
+    locked: 0
+  - name: Moon
+    uniqueID: 1646246391
+    locked: 0
+  - name: Turret
+    uniqueID: 1040799081
+    locked: 0
+  - name: Player Missile
+    uniqueID: 1397547881
     locked: 0
