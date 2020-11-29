@@ -1,5 +1,7 @@
 # AnimatedSprites
 
+For this project all pixel sprites will use 15ppu
+
 ## Licensing
 
 The following assets are provided under a license.
